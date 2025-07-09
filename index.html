@@ -8,24 +8,24 @@
   <meta name="keywords" content="audio transcription, speech to text, macOS transcription, private transcription, local transcription, real-time transcription, voice to text, offline transcription" />
   <meta name="author" content="Alex Jiao" />
   <meta name="robots" content="index, follow" />
-  
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://inkoscribe.com/" />
   <meta property="og:title" content="inkoscribe - Private Local Audio Transcription for macOS" />
   <meta property="og:description" content="Private, local audio transcription for macOS. Real-time speech-to-text that keeps your voice data secure. No cloud uploads, no servers." />
   <meta property="og:image" content="https://inkoscribe.com/og-image.png" />
-  
+
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content="https://inkoscribe.com/" />
   <meta property="twitter:title" content="inkoscribe - Private Local Audio Transcription for macOS" />
   <meta property="twitter:description" content="Private, local audio transcription for macOS. Real-time speech-to-text that keeps your voice data secure." />
   <meta property="twitter:image" content="https://inkoscribe.com/og-image.png" />
-  
+
   <!-- Canonical URL -->
   <link rel="canonical" href="https://inkoscribe.com/" />
-  
+
   <!-- Structured Data -->
   <script type="application/ld+json">
   {
@@ -51,7 +51,7 @@
     "keywords": "audio transcription, speech to text, macOS, private transcription, local transcription"
   }
   </script>
-  
+
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=EB+Garamond&display=swap" rel="stylesheet">
   <style>
     body {
@@ -354,7 +354,7 @@
     <h2>Transcribe audio without sending it to the cloud</h2>
     <p class="hero-subtitle">Private, local, real-time transcription for macOS</p>
   </header>
-  
+
   <main>
 
   <section>
@@ -400,6 +400,7 @@
   <section>
     <div class="install-section">
       <h3>Installation</h3>
+      <p><strong>⚠️ Requires macOS 13+ (M1, M2, M3+)</strong></p>
       <div class="code-container">
         <pre><code><span class="prompt">$</span> <span class="command">brew tap uohzxela/inkoscribe</span>
 <span class="prompt">$</span> <span class="command">brew install inkoscribe</span>
@@ -424,7 +425,7 @@
     <p>Found a bug? Have a feature request? Want to chat?</p>
     <p>📧 <a href="mailto:uohzxela@gmail.com">uohzxela@gmail.com</a></p>
   </section>
-  
+
   </main>
 
   <footer>
@@ -493,7 +494,7 @@
         document.body.appendChild(textArea);
         textArea.focus();
         textArea.select();
-        
+
         try {
           const successful = document.execCommand('copy');
           document.body.removeChild(textArea);
