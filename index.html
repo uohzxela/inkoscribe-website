@@ -197,6 +197,13 @@
       opacity: 1;
       transform: scale(1.05);
     }
+    .copy-button.error {
+      background: rgba(244, 67, 54, 0.15);
+      border-color: rgba(244, 67, 54, 0.3);
+      color: #f44336;
+      opacity: 1;
+      transform: scale(1.05);
+    }
     .hero-subtitle {
       font-size: clamp(1em, 2.5vw, 1.2em);
       color: #666;
@@ -430,7 +437,8 @@
       const commands = `brew tap uohzxela/inkoscribe\nbrew install inkoscribe\ninkoscribe -s sys  # Transcribe system audio`;
       const button = document.querySelector('.copy-button');
 
-      navigator.clipboard.writeText(commands).then(() => {
+      // Function to show success feedback
+      function showSuccess() {
         button.classList.add('copied');
         button.innerHTML = `
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -449,7 +457,69 @@
           `;
           button.title = 'Copy commands';
         }, 2000);
-      });
+      }
+
+      // Function to show error feedback
+      function showError() {
+        button.classList.add('error');
+        button.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+        `;
+        button.title = 'Copy failed - try again';
+
+        setTimeout(() => {
+          button.classList.remove('error');
+          button.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+            </svg>
+          `;
+          button.title = 'Copy commands';
+        }, 2000);
+      }
+
+      // Fallback function for older browsers
+      function fallbackCopy() {
+        const textArea = document.createElement('textarea');
+        textArea.value = commands;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+          const successful = document.execCommand('copy');
+          document.body.removeChild(textArea);
+          if (successful) {
+            showSuccess();
+          } else {
+            showError();
+          }
+        } catch (err) {
+          document.body.removeChild(textArea);
+          showError();
+        }
+      }
+
+      // Try modern clipboard API first
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(commands).then(() => {
+          showSuccess();
+        }).catch(() => {
+          // If clipboard API fails, try fallback
+          fallbackCopy();
+        });
+      } else {
+        // Use fallback for older browsers
+        fallbackCopy();
+      }
     }
   </script>
 </body>
