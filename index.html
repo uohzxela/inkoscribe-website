@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>inkoscribe — Private. Local. Yours.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=EB+Garamond&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #f9f6f1;
+      color: #222;
+      font-family: 'EB Garamond', serif;
+      line-height: 1.6;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4em;
+      margin: 0 0 10px 0;
+    }
+    header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: normal;
+      font-size: 1.7em;
+      margin: 0;
+    }
+    section {
+      margin: 60px 0;
+    }
+    h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6em;
+      margin-bottom: 20px;
+    }
+    p {
+      margin: 0 0 15px 0;
+      font-size: 1.2em;
+    }
+    .code-container {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto 10px;
+    }
+    pre {
+      background: #333;
+      color: #eee;
+      padding: 1.2em;
+      overflow-x: auto;
+      font-family: monospace;
+      border-radius: 6px;
+      text-align: left;
+      font-size: 1em;
+      margin: 0;
+    }
+    code .comment { color: #9cdcfe; }
+    code .command { color: #dcdcaa; }
+    .copy-button {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #555;
+      color: #fff;
+      border: none;
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      opacity: 0.7;
+      transition: opacity 0.2s, background-color 0.2s;
+    }
+    .copy-button:hover {
+      opacity: 1;
+      background: #666;
+    }
+    .copy-button.copied {
+      background: #4CAF50;
+      opacity: 1;
+    }
+    footer {
+      margin-top: 80px;
+      font-size: 0.9em;
+      color: #555;
+    }
+    footer p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>inkoscribe</h1>
+    <h2>Private, local, real-time transcription for macOS</h2>
+  </header>
+
+  <section>
+    <h3>Why inkoscribe?</h3>
+    <p>Most transcription tools send your voice data to the cloud. <strong>inkoscribe</strong> keeps it all on your Mac.</p>
+    <p>No uploads. No servers. Just instant, word-by-word transcription — entirely local.</p>
+    <p>Perfect for meetings, calls, interviews — anytime you need your audio in text without compromising privacy.</p>
+  </section>
+
+  <section>
+    <h3>Install</h3>
+    <p>Install and run in seconds:</p>
+    <div class="code-container">
+      <pre><code><span class="command">brew tap uohzxela/inkoscribe</span>
+<span class="command">brew install inkoscribe</span>
+<span class="command">inkoscribe -s sys</span> <span class="comment"># Transcribe system audio</span></code></pre>
+      <button class="copy-button" onclick="copyCommands()" title="Copy commands">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <section>
+    <h3>About the Creator</h3>
+    <p>I'm a hearing-impaired software engineer who needed a local-first, real-time transcription tool for daily use. I built inkoscribe to transcribe meetings, interviews, and calls entirely on my machine — no risk of sending sensitive audio to the cloud. It's my daily driver, and I hope it can be yours too.</p>
+  </section>
+
+  <section>
+    <h3>Contact</h3>
+    <p>Found a bug? Have a feature request?</p>
+    <p>📧 <a href="mailto:uohzxela@gmail.com">uohzxela@gmail.com</a></p>
+  </section>
+
+  <footer>
+    <p>inkoscribe — Private. Local. Yours.</p>
+    <p>© 2025 — inkoscribe was created by <a href="https://uohzxela.github.io/" target="_blank">Alex Jiao</a></p>
+  </footer>
+
+  <script>
+    function copyCommands() {
+      const commands = `brew tap uohzxela/inkoscribe\nbrew install inkoscribe\ninkoscribe -s sys  # Transcribe system audio`;
+      const button = document.querySelector('.copy-button');
+      
+      navigator.clipboard.writeText(commands).then(() => {
+        button.classList.add('copied');
+        button.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20,6 9,17 4,12"></polyline>
+          </svg>
+        `;
+        button.title = 'Copied!';
+        
+        setTimeout(() => {
+          button.classList.remove('copied');
+          button.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+            </svg>
+          `;
+          button.title = 'Copy commands';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
+
