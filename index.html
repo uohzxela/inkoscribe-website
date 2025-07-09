@@ -310,6 +310,10 @@
         padding: 1.5em;
         font-size: 0.85em;
       }
+      .usage-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+      }
     }
     footer {
       margin-top: 80px;
@@ -403,14 +407,44 @@
       <p><strong>⚠️ Requires macOS 13+ (M1, M2, M3+)</strong></p>
       <div class="code-container">
         <pre><code><span class="prompt">$</span> <span class="command">brew tap uohzxela/inkoscribe</span>
-<span class="prompt">$</span> <span class="command">brew install inkoscribe</span>
-<span class="prompt">$</span> <span class="command">inkoscribe -s sys</span> <span class="comment"># Transcribe system audio</span></code></pre>
-        <button class="copy-button" onclick="copyCommands()" title="Copy commands">
+<span class="prompt">$</span> <span class="command">brew install inkoscribe</span></code></pre>
+        <button class="copy-button" onclick="copyInstallCommands()" title="Copy install commands">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
             <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
           </svg>
         </button>
+      </div>
+      
+      <h3 style="margin-top: 40px;">Usage</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;" class="usage-grid">
+        <div>
+          <h4 style="margin: 0 0 10px 0; font-size: 1em; color: #555;">System Audio</h4>
+          <div class="code-container" style="margin: 0;">
+            <pre style="padding: 1em;"><code><span class="prompt">$</span> <span class="command">inkoscribe -s sys</span></code></pre>
+            <button class="copy-button" onclick="copySysCommand()" title="Copy system audio command" style="top: 10px; right: 10px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+              </svg>
+            </button>
+          </div>
+          <p style="font-size: 0.9em; color: #666; margin: 8px 0 0 0;">For meetings, calls, videos</p>
+        </div>
+        
+        <div>
+          <h4 style="margin: 0 0 10px 0; font-size: 1em; color: #555;">Microphone</h4>
+          <div class="code-container" style="margin: 0;">
+            <pre style="padding: 1em;"><code><span class="prompt">$</span> <span class="command">inkoscribe -s mic</span></code></pre>
+            <button class="copy-button" onclick="copyMicCommand()" title="Copy microphone command" style="top: 10px; right: 10px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+              </svg>
+            </button>
+          </div>
+          <p style="font-size: 0.9em; color: #666; margin: 8px 0 0 0;">For your voice</p>
+        </div>
       </div>
     </div>
   </section>
@@ -434,8 +468,8 @@
   </footer>
 
   <script>
-    function copyCommands() {
-      const commands = `brew tap uohzxela/inkoscribe\nbrew install inkoscribe\ninkoscribe -s sys  # Transcribe system audio`;
+    function copyInstallCommands() {
+      const commands = `brew tap uohzxela/inkoscribe\nbrew install inkoscribe`;
       const button = document.querySelector('.copy-button');
 
       // Function to show success feedback
@@ -512,6 +546,102 @@
       // Try modern clipboard API first
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(commands).then(() => {
+          showSuccess();
+        }).catch(() => {
+          // If clipboard API fails, try fallback
+          fallbackCopy();
+        });
+      } else {
+        // Use fallback for older browsers
+        fallbackCopy();
+      }
+    }
+
+    function copySysCommand() {
+      const command = `inkoscribe -s sys`;
+      copyToClipboard(command, event.target.closest('.code-container').querySelector('.copy-button'));
+    }
+
+    function copyMicCommand() {
+      const command = `inkoscribe -s mic`;
+      copyToClipboard(command, event.target.closest('.code-container').querySelector('.copy-button'));
+    }
+
+    function copyToClipboard(text, button) {
+      // Function to show success feedback
+      function showSuccess() {
+        button.classList.add('copied');
+        button.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20,6 9,17 4,12"></polyline>
+          </svg>
+        `;
+        button.title = 'Copied!';
+
+        setTimeout(() => {
+          button.classList.remove('copied');
+          button.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+            </svg>
+          `;
+          button.title = 'Copy commands';
+        }, 2000);
+      }
+
+      // Function to show error feedback
+      function showError() {
+        button.classList.add('error');
+        button.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+        `;
+        button.title = 'Copy failed - try again';
+
+        setTimeout(() => {
+          button.classList.remove('error');
+          button.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+            </svg>
+          `;
+          button.title = 'Copy commands';
+        }, 2000);
+      }
+
+      // Fallback function for older browsers
+      function fallbackCopy() {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+          const successful = document.execCommand('copy');
+          document.body.removeChild(textArea);
+          if (successful) {
+            showSuccess();
+          } else {
+            showError();
+          }
+        } catch (err) {
+          document.body.removeChild(textArea);
+          showError();
+        }
+      }
+
+      // Try modern clipboard API first
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
           showSuccess();
         }).catch(() => {
           // If clipboard API fails, try fallback
